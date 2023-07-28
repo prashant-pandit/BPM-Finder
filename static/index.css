@@ -1,0 +1,137 @@
+body{
+    background-color: #fff6f6;
+}
+
+/* Navigation bar styles */
+.navbar {
+    background-color: #333;
+    padding: 10px 0;
+}
+
+.navbar-heading {
+    color: #fff;
+    font-size: 1.5rem;
+    text-align: center;
+    margin: 0;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 80vh;
+    margin: 0;
+}
+
+/* #heading {
+    font-size: 2rem;
+    position: absolute;
+    top: 4%;
+} */
+
+#start-recording {
+    display: inline-block;
+    padding: 12px 24px;
+    font-size: 25px;
+    font-weight: bold;
+    color: #ffffff;
+    text-transform: uppercase;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    margin: 4rem 0;
+}
+
+#start-recording:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(76, 175, 80, 0.5);
+}
+
+#start-recording:active {
+    background-color: #3d903d;
+    transform: translateY(2px);
+    box-shadow: 0 3px 8px rgba(76, 175, 80, 0.5);
+}
+
+/* Button styles for disabled and loading states */
+#start-recording.disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+#start-recording.loading {
+    pointer-events: none;
+    cursor: progress;
+}
+
+/* Loading spinner animation */
+@keyframes loadingAnimation {
+    to { transform: rotate(360deg); }
+}
+
+.loading-spinner {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top: 2px solid #ffffff;
+    border-radius: 50%;
+    animation: loadingAnimation 1s linear infinite;
+    vertical-align: middle;
+    margin-right: 6px;
+}
+
+#start-recording.loading .loading-spinner {
+    margin-right: 8px;
+}
+
+#not-found {
+    font-size: 25px;
+    color: #ff5f5f;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+#status {
+    font-size: 30px;
+    font-weight: bold;
+    color: black;
+    background-image: linear-gradient(to top, #fbc2eb 0%, #a6c1ee 100%);
+    padding: 12px 24px;
+    margin: 20px 10px;
+    box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+    position: relative;
+    display: inline-block;
+    transition: opacity 0.3s ease;
+}
+
+#status.loading {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#status.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+@keyframes fadeInOut {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+
+#status.changed {
+    animation: fadeInOut 2s ease-in-out;
+}
+
+.footer {
+    color: black;
+    font-size: large;
+    text-align: center;
+    padding: 10px 0;
+}

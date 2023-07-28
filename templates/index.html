@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BPM Finder</title>
+    <link rel="stylesheet" type="text/css" href="/static/index.css">
+    <meta charset="UTF-8">
+    <meta name="description" content="Estimate the BPM (Beats Per Minute) of audio tracks with the BPM Finder web app developed by Peculiar Creations. ">
+    <meta name="keywords" content="BPM Finder, Beats Per Minute Calculator, Audio BPM Analysis, Music Tempo Finder, Track BPM Detector, BPM Detector Tool, Music Beat Analyzer, Tempo Estimator App, BPM Detection Software, Audio Track BPM Checker, BPM Calculator, how to find bpm, song bpm, songs bpm, track bpm">
+    <meta name="author" content="Peculiar Beats">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <nav class="navbar">
+        <h1 class="navbar-heading">BPM Finder</h1>
+    </nav>
+    <div class="container">
+        <!-- <div id="heading">
+            <h1>BPM Finder</h1>
+        </div> -->
+        <button id="start-recording" onclick="toggleRecording()">Start Recording</button>
+        <p id="status" style="display: none;"></p> <!-- Hide the status initially -->
+        <p id="not-found" style="display: none;">Track not found!</p> <!-- Add the "Not Found" message -->
+        <div style="width: 70%; text-align: center;font-size: large; margin-top: 2rem;">
+            <p style="font-weight: bold;">Usage</p>
+            <p>BPM Finder web app allows users to estimate the beats per minute (BPM) 
+                of audio tracks recorded through their microphone. 
+                Click 'Start Recording', play the music, and view the calculated BPM result.
+            </p>
+        </div>
+    </div>
+    <hr/>
+    <footer class="footer">
+        <p>© 2023 Peculiar Creations. All rights reserved.</p>
+    </footer>
+    <script>
+        function toggleRecording() {
+            const button = document.getElementById('start-recording');
+            const status = document.getElementById('status');
+            const notFoundMessage = document.getElementById('not-found');
+
+            button.disabled = true; // Disable the button during recording
+            button.classList.add('loading'); // Add the "loading" class to show the loading state
+            button.innerHTML = '<span class="loading-spinner"></span>Recording...';
+
+            status.style.display = 'none'; // Hide the status initially
+            status.classList.remove('changed'); // Remove the "changed" class to prevent unintended animation
+            notFoundMessage.style.display = 'none'; // Hide the "Not Found" message
+
+            fetch('/calculate_bpm', { method: 'POST' })
+                .then(response => {
+                    if (response.ok) {
+                        return response.text();
+                    } else {
+                        throw new Error('Track not found or recording error');
+                    }
+                })
+                .then(result => {
+                    status.innerText = result;
+                    status.style.display = 'block'; // Show the status message after the recording is done
+                    status.classList.add('changed'); // Add the "changed" class to trigger the animation
+                    button.disabled = false; // Enable the button after recording
+                    button.classList.remove('loading'); // Remove the "loading" class
+                    button.innerHTML = 'Start Recording';
+                })
+                .catch(error => {
+                    status.style.display = 'none'; // Hide the status message if an error occurs
+                    notFoundMessage.style.display = 'block'; // Show the "Not Found" message
+                    button.disabled = false; // Enable the button after recording
+                    button.classList.remove('loading'); // Remove the "loading" class
+                    button.innerHTML = 'Start Recording';
+                });
+        }
+
+        // Reset the "changed" class after the animation ends
+        document.getElementById('status').addEventListener('animationend', function() {
+            this.classList.remove('changed');
+        });
+    </script>
+</body>
+</html>
