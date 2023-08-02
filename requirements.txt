@@ -26,8 +26,8 @@ pycparser==2.21
 requests==2.31.0
 scikit-learn
 scipy
-sounddevice==0.4.6
-soundfile==0.12.1
+sounddevice
+soundfile
 soxr==0.3.5
 threadpoolctl
 typing_extensions
