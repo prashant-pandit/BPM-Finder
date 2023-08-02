@@ -32,49 +32,65 @@
     <footer class="footer">
         <p>© 2023 Peculiar Creations. All rights reserved.</p>
     </footer>
-    <script>
-        function toggleRecording() {
-            const button = document.getElementById('start-recording');
-            const status = document.getElementById('status');
-            const notFoundMessage = document.getElementById('not-found');
+    <!-- Add this script to your HTML file -->
+<script>
+    function toggleRecording() {
+        const button = document.getElementById('start-recording');
+        const status = document.getElementById('status');
+        const notFoundMessage = document.getElementById('not-found');
 
-            button.disabled = true; // Disable the button during recording
-            button.classList.add('loading'); // Add the "loading" class to show the loading state
-            button.innerHTML = '<span class="loading-spinner"></span>Recording...';
+        button.disabled = true; // Disable the button during recording
+        button.classList.add('loading'); // Add the "loading" class to show the loading state
+        button.innerHTML = '<span class="loading-spinner"></span>Recording...';
 
-            status.style.display = 'none'; // Hide the status initially
-            status.classList.remove('changed'); // Remove the "changed" class to prevent unintended animation
-            notFoundMessage.style.display = 'none'; // Hide the "Not Found" message
+        status.style.display = 'none'; // Hide the status initially
+        status.classList.remove('changed'); // Remove the "changed" class to prevent unintended animation
+        notFoundMessage.style.display = 'none'; // Hide the "Not Found" message
 
-            fetch('/calculate_bpm', { method: 'POST' })
-                .then(response => {
-                    if (response.ok) {
-                        return response.text();
-                    } else {
-                        throw new Error('Track not found or recording error');
-                    }
-                })
-                .then(result => {
-                    status.innerText = result;
-                    status.style.display = 'block'; // Show the status message after the recording is done
-                    status.classList.add('changed'); // Add the "changed" class to trigger the animation
-                    button.disabled = false; // Enable the button after recording
-                    button.classList.remove('loading'); // Remove the "loading" class
-                    button.innerHTML = 'Start Recording';
-                })
-                .catch(error => {
-                    status.style.display = 'none'; // Hide the status message if an error occurs
-                    notFoundMessage.style.display = 'block'; // Show the "Not Found" message
-                    button.disabled = false; // Enable the button after recording
-                    button.classList.remove('loading'); // Remove the "loading" class
-                    button.innerHTML = 'Start Recording';
-                });
-        }
+        // Request microphone access
+        navigator.mediaDevices.getUserMedia({ audio: true })
+            .then(function (stream) {
+                // Microphone access granted, start recording or processing audio here
 
-        // Reset the "changed" class after the animation ends
-        document.getElementById('status').addEventListener('animationend', function() {
-            this.classList.remove('changed');
-        });
-    </script>
+                fetch('/calculate_bpm', { method: 'POST' })
+                    .then(response => {
+                        if (response.ok) {
+                            return response.text();
+                        } else {
+                            throw new Error('Track not found or recording error');
+                        }
+                    })
+                    .then(result => {
+                        status.innerText = result;
+                        status.style.display = 'block'; // Show the status message after the recording is done
+                        status.classList.add('changed'); // Add the "changed" class to trigger the animation
+                        button.disabled = false; // Enable the button after recording
+                        button.classList.remove('loading'); // Remove the "loading" class
+                        button.innerHTML = 'Start Recording';
+                    })
+                    .catch(error => {
+                        status.style.display = 'none'; // Hide the status message if an error occurs
+                        notFoundMessage.style.display = 'block'; // Show the "Not Found" message
+                        button.disabled = false; // Enable the button after recording
+                        button.classList.remove('loading'); // Remove the "loading" class
+                        button.innerHTML = 'Start Recording';
+                    });
+            })
+            .catch(function (error) {
+                // Microphone access denied or an error occurred, handle the error here
+                status.style.display = 'none'; // Hide the status message if an error occurs
+                notFoundMessage.style.display = 'block'; // Show the "Not Found" message
+                button.disabled = false; // Enable the button after recording
+                button.classList.remove('loading'); // Remove the "loading" class
+                button.innerHTML = 'Start Recording';
+            });
+    }
+
+    // Reset the "changed" class after the animation ends
+    document.getElementById('status').addEventListener('animationend', function() {
+        this.classList.remove('changed');
+    });
+</script>
+
 </body>
 </html>

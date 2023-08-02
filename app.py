@@ -40,7 +40,7 @@ def calculate_bpm_route():
 
         # Check if the audio contains any significant amplitude
         max_amplitude = np.max(np.abs(audio_data))
-        silence_threshold = 0.02  # Adjust this threshold as needed
+        silence_threshold = 0.1  # Adjust this threshold as needed
         if max_amplitude < silence_threshold:
             return "Error: No significant audio detected", 400
 
