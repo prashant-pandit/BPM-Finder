@@ -34,4 +34,4 @@ typing_extensions
 urllib3
 virtualenv==20.24.2
 waitress==2.1.2
-Werkzeug==2.3.6
+Werkzeugsds
